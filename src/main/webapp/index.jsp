@@ -13,17 +13,20 @@
         <title>Instagrim</title>
         <link rel="stylesheet" type="text/css" href="Styles.css" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script> 
+            $(function(){
+              $("#header").load("header.html");
+              $("#footer").load("footer.html");
+            });
+        </script>
     </head>
     <body>
-        <header>
-            <h1>InstaGrim ! </h1>
-            <h2>Your world in Black and White</h2>
-        </header>
+        <header id="header"></header>
         <nav>
             <ul>
 
                
-                <li><a href="upload.jsp">Upload</a></li>
                     <%
                         
                         LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
@@ -31,24 +34,20 @@
                             String UserName = lg.getUsername();
                             if (lg.getlogedin()) {
                     %>
-
+                <li><a href="upload">Upload</a></li>
                 <li><a href="/Instagrim/Images/<%=lg.getUsername()%>">Your Images</a></li>
+                <li><a href="/Instagrim/Logout">Log Out</a></li>
                     <%}
                             }else{
                                 %>
-                 <li><a href="register.jsp">Register</a></li>
-                <li><a href="login.jsp">Login</a></li>
+                 <li><a href="register">Register</a></li>
+                <li><a href="login">Login</a></li>
                 <%
                                         
                             
                     }%>
             </ul>
         </nav>
-        <footer>
-            <ul>
-                <li class="footer"><a href="/Instagrim">Home</a></li>
-                <li>&COPY; Andy C</li>
-            </ul>
-        </footer>
+        <footer id="footer"></footer>
     </body>
 </html>

@@ -125,6 +125,7 @@ public class Image extends HttpServlet {
         out.close();
     }
 
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         for (Part part : request.getParts()) {
             System.out.println("Part Name " + part.getName());
@@ -136,7 +137,7 @@ public class Image extends HttpServlet {
             int i = is.available();
             HttpSession session=request.getSession();
             LoggedIn lg= (LoggedIn)session.getAttribute("LoggedIn");
-            String username="majed";
+            String username="majed"; //TODO: po co komu majed??
             if (lg.getlogedin()){
                 username=lg.getUsername();
             }

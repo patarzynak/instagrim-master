@@ -11,13 +11,16 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Instagrim</title>
         <link rel="stylesheet" type="text/css" href="Styles.css" />
-
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script> 
+            $(function(){
+              $("#header").load("header.html");
+              $("#footer").load("footer.html");
+            });
+        </script>
     </head>
     <body>
-        <header>
-        <h1>InstaGrim ! </h1>
-        <h2>Your world in Black and White</h2>
-        </header>
+        <header id="header"></header>
         <nav>
             <ul>
                 
@@ -37,11 +40,6 @@
             </form>
 
         </article>
-       <footer>
-            <ul>
-                <li class="footer"><a href="/Instagrim">Home</a></li>
-                <li>&COPY; Andy C</li>
-            </ul>
-        </footer>
+       <footer id="footer"></footer>
     </body>
 </html>

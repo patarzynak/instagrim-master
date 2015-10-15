@@ -8,10 +8,14 @@ and open the template in the editor.
     Author     : Administrator
 */
 
+body{
+    font-family: "Helvetica", sans-serif;
+    background-color: whitesmoke;
+}
+
 header{
     text-align: center;
-    font-family: "Helvetica", sans-serif;
-    color: white;
+    color: whitesmoke;
     background-color: black;
 }
 
@@ -22,16 +26,30 @@ footer{
 }
 nav {
     text-align: left;
+    text-decoration: none;
+    font-weight: bold;
     border: 5px;
-    float: right;
-    line-height:20px;
-    background-color:#eeeeee;
+    float: none;
+    background-color: #a9a9a9;
     height: auto;
     width: auto;
 }
 
-ul li{
-    list-style-type:  square;
+nav a:link {
+    color: whitesmoke;
+    
+}
+
+nav a:visited {
+    color: whitesmoke;
+}
+
+nav a:hover {
+    color: black;
+}
+
+nav ul li{
+    display: inline;
 }
 
 footer ul li{

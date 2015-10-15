@@ -37,13 +37,13 @@ public class User {
             return false;
         }
         Session session = cluster.connect("instagrim");
-        PreparedStatement ps = session.prepare("insert into userprofiles (login,password) Values(?,?)");
+        PreparedStatement ps = session.prepare("insert into userprofiles (login,password) Values(?,?) if not exists");
        
         BoundStatement boundStatement = new BoundStatement(ps);
         session.execute( // this is where the query is executed
                 boundStatement.bind( // here you are binding the 'boundStatement'
                         username,EncodedPassword));
-        //We are assuming this always works.  Also a transaction would be good here !
+        //TODO: We are assuming this always works.  Also a transaction would be good here !
         
         return true;
     }
@@ -65,7 +65,7 @@ public class User {
                 boundStatement.bind( // here you are binding the 'boundStatement'
                         username));
         if (rs.isExhausted()) {
-            System.out.println("No Images returned");
+            System.out.println("No Users returned");
             return false;
         } else {
             for (Row row : rs) {
