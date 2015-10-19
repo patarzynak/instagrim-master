@@ -11,22 +11,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Instagrim</title>
         <link rel="stylesheet" type="text/css" href="Styles.css" />
-        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-        <script> 
-            $(function(){
-              $("#header").load("header.html");
-              $("#footer").load("footer.html");
-            });
-        </script>
     </head>
     <body>
-        <header id="header"></header>
-        <nav>
-            <ul>
-                
-                <li><a href="/Instagrim/Images/majed">Sample Images</a></li>
-            </ul>
-        </nav>
+        <%@include file="header.jsp" %>
+        <%@include file="nav.jsp" %>
        
         <article>
             <h3>Login</h3>
@@ -40,6 +28,6 @@
             </form>
 
         </article>
-       <footer id="footer"></footer>
+       <%@include file="footer.jsp" %>
     </body>
 </html>

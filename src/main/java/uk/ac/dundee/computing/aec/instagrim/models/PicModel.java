@@ -20,6 +20,8 @@ import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.utils.Bytes;
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 
@@ -59,11 +61,20 @@ public class PicModel {
             int length = b.length;
             java.util.UUID picid = convertor.getTimeUUID();
             
-            //The following is a quick and dirty way of doing this, will fill the disk quickly !
+            
+            //Andy C: The following is a quick and dirty way of doing this, will fill the disk quickly !
+            //KP: Not sure if that's the way - but attempted fixing
             Boolean success = (new File("/var/tmp/instagrim/")).mkdirs();
             FileOutputStream output = new FileOutputStream(new File("/var/tmp/instagrim/" + picid));
-
-            output.write(b);
+            InputStream is = new ByteArrayInputStream(b);
+            BufferedInputStream input = new BufferedInputStream(is);
+            byte[] buffer1 = new byte[8192];
+            for (int len = 0; (len = input.read(buffer1)) > 0;) {
+                output.write(buffer1, 0, len);
+            }
+            output.close();
+            //output.write(b);
+            
             byte []  thumbb = picresize(picid.toString(),types[1]);
             int thumblength= thumbb.length;
             ByteBuffer thumbbuf=ByteBuffer.wrap(thumbb);

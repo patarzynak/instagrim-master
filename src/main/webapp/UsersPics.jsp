@@ -13,36 +13,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Instagrim</title>
         <link rel="stylesheet" type="text/css" href="/Instagrim/Styles.css" />
-        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-        <script> 
-            $(function(){
-              $("#header").load("header.html");
-              $("#footer").load("footer.html");
-            });
-        </script>
     </head>
     <body>
-        <header>
-            <h1>InstaGrim ! </h1>
-            <h2>Your world in Black and White</h2>
-        </header> 
-        <nav>
-            <ul>
-                <li class="nav"><a href="/Instagrim/upload">Upload</a></li>
-                <li class="nav"><a href="/Instagrim/Images/majed">Sample Images</a></li>
-                <%
-                        
-                        LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
-                        if (lg != null) {
-                            if (lg.getlogedin()) {
-                %>
-                <li><a href="/Instagrim/Logout">Log Out</a></li>
-                <%
-                            }
-                        }
-                %>
-            </ul>
-        </nav>
+        <%@include file="header.jsp" %>
+        <%@include file="nav.jsp" %>
  
         <article>
             <h1>Your Pics</h1>
@@ -65,11 +39,6 @@
             }
         %>
         </article>
-        <footer>
-            <ul>
-                <li class="footer"><a href="/Instagrim">Home</a></li>
-                <li>&COPY; KP</li>
-            </ul>
-        </footer>
+        <%@include file="footer.jsp" %>
     </body>
 </html>
