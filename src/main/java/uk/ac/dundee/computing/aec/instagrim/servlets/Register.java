@@ -49,20 +49,38 @@ public class Register extends HttpServlet {
         String password=request.getParameter("password");
         String repassword=request.getParameter("repassword");
         
+        String firstname=request.getParameter("firstname");
+        String lastname=request.getParameter("lastname");
+        String street=request.getParameter("street");
+        String city=request.getParameter("city");
+        String zip=request.getParameter("zip");
+        String email=request.getParameter("email");
+        
+        int numzip;
+        try{
+            numzip = Integer.parseInt(zip);
+        }
+        catch (Exception e){
+            //some alert maybe
+            response.sendRedirect("register");
+            return;
+        }     
         if(!username.equals("")){
             if (password.equals(repassword))
             {
                 User us=new User();
                 us.setCluster(cluster);
-                us.RegisterUser(username, password);
+                us.RegisterUser(username, password, firstname, lastname, street, city, numzip, email);
                 response.sendRedirect("/Instagrim");
             }
             else
             {
+                //some alert maybe
                 response.sendRedirect("register");
             }
         }
         else{
+            //some alert maybe
             response.sendRedirect("register");
         }
 

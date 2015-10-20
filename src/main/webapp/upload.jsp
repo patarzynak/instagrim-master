@@ -30,6 +30,7 @@
                 <input type="submit" value="Press"> to upload the file!
             </form>
         </article>
+
             <%  }
                     }
                     else{
@@ -40,6 +41,7 @@
             <%
             }
             %>
+     
             <%@include file="footer.jsp" %>
     </body>
 </html>

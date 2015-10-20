@@ -12,6 +12,10 @@ body{
     font-family: "Helvetica", sans-serif;
     background-color: whitesmoke;
 }
+form ul li{
+    list-style-type:  none;
+    line-height: 30px;
+}
 
 header{
     text-align: center;
