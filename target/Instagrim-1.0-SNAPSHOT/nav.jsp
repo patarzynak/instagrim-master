@@ -10,8 +10,7 @@
 <html>
     <nav>
         <ul>
-
-               
+                <li><a href="/Instagrim/search">Search Profiles</a></li>
                     <%
                         
                         LoggedIn lgn = (LoggedIn) session.getAttribute("LoggedIn");

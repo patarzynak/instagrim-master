@@ -54,6 +54,7 @@ nav a:hover {
 
 nav ul li{
     display: inline;
+    margin: 10px;
 }
 
 footer ul li{

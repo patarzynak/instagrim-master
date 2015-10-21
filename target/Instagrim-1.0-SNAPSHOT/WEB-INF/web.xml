@@ -32,6 +32,16 @@
         <servlet-name>index</servlet-name>
         <url-pattern>/index</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>search</servlet-name>
+        <jsp-file>/search.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>search</servlet-name>
+        <url-pattern>/search</url-pattern>
+    </servlet-mapping>
+    
     <servlet>
         <servlet-name>xxx</servlet-name>
         <jsp-file>/xxx.jsp</jsp-file>
@@ -40,5 +50,4 @@
         <servlet-name>xxx</servlet-name>
         <url-pattern>/xxx</url-pattern>
     </servlet-mapping>
-
 </web-app>

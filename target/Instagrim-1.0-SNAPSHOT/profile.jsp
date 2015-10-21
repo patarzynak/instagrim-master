@@ -22,6 +22,7 @@
             if (usInf == null) {
         %>
         <h1>No Profile Found</h1>
+        <h3><a href="/Instagrim/search">Search for other profiles</a></h3>
         <%
         } else {
 

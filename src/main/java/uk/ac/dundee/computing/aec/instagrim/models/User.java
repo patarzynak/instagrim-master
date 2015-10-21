@@ -52,14 +52,21 @@ public class User {
         } else {
             for (Row row : rs) {
                 Map<String, UDTValue> addressMap = row.getMap("addresses", String.class, UDTValue.class);
-                
+                String str = null, cit = null;
+                int zip = -1;
+                System.out.println(addressMap.toString());
+                if(addressMap.get("addresses") != null){
+                    str = addressMap.get("addresses").getString("street");
+                    cit = addressMap.get("addresses").getString("city");
+                    zip = addressMap.get("addresses").getInt("zip");
+                }
                 profile = new UserInfo();
                 profile.setInfo(row.getString("login"),
                                 row.getString("first_name"),
                                 row.getString("last_name"),
-                                addressMap.get("addresses").getString("street"),
-                                addressMap.get("addresses").getString("city"),
-                                addressMap.get("addresses").getInt("zip"),
+                                str,
+                                cit,
+                                zip,
                                 row.getSet("email", String.class).toString()
                                 );
 
