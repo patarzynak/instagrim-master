@@ -21,13 +21,14 @@
                     %>
                 <li><a href="/Instagrim/upload">Upload</a></li>
                 <li><a href="/Instagrim/Images/<%=lgn.getUsername()%>">Your Images</a></li>
+                <li><a href="/Instagrim/Profile/<%=lgn.getUsername()%>">Your Profile</a></li>
                 <li><a href="/Instagrim/Logout">Log Out</a></li>
                     <%}
                             }else{
                                 %>
                 <li><a href="/Instagrim/login">Login</a></li>
                 <li><a href="/Instagrim/register">Register</a></li>
-                <li class="nav"><a href="/Instagrim/Images/majed">Sample Images</a></li>
+                <li><a href="/Instagrim/Images/majed">Sample Images</a></li>
                 <%
                                         
                             

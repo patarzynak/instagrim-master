@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 import uk.ac.dundee.computing.aec.instagrim.lib.AeSimpleSHA1;
 import uk.ac.dundee.computing.aec.instagrim.stores.Pic;
+import uk.ac.dundee.computing.aec.instagrim.stores.UserInfo;
 
 /**
  *
@@ -36,9 +37,10 @@ public class User {
         this.cluster = cluster;
     }
     
-    public User getDetails(String username){
+    public UserInfo getProfile(String username){
+        UserInfo profile = null;
         Session session = cluster.connect("instagrim");
-        PreparedStatement ps = session.prepare("select * from userprofiles where user =?");
+        PreparedStatement ps = session.prepare("select * from userprofiles where login =?");
         ResultSet rs = null;
         BoundStatement boundStatement = new BoundStatement(ps);
         rs = session.execute( // this is where the query is executed
@@ -49,14 +51,21 @@ public class User {
             return null;
         } else {
             for (Row row : rs) {
-                Map<String, UDTValue> addressMap = row.getMap("addresses", String.class, UDT.class);
-                java.util.UUID UUID = row.getUUID("picid");
-                System.out.println("UUID" + UUID.toString());
-                pic.setUUID(UUID);
-                Pics.add(pic);
+                Map<String, UDTValue> addressMap = row.getMap("addresses", String.class, UDTValue.class);
+                
+                profile = new UserInfo();
+                profile.setInfo(row.getString("login"),
+                                row.getString("first_name"),
+                                row.getString("last_name"),
+                                addressMap.get("addresses").getString("street"),
+                                addressMap.get("addresses").getString("city"),
+                                addressMap.get("addresses").getInt("zip"),
+                                row.getSet("email", String.class).toString()
+                                );
 
             }
         }
+        return profile;
     }
     
     public boolean RegisterUser(String username, String Password, String firstname, String lastname, String street, String city, int zip, String email){
@@ -121,9 +130,6 @@ public class User {
    
     
     return false;  
-    }
-       public void setCluster(Cluster cluster) {
-        this.cluster = cluster;
     }
 
     
