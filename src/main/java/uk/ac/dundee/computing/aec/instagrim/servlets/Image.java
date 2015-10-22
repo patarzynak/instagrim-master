@@ -36,7 +36,8 @@ import uk.ac.dundee.computing.aec.instagrim.stores.Pic;
     "/Image/*",
     "/Thumb/*",
     "/Images",
-    "/Images/*"
+    "/Images/*",
+    "/RmImage/*"
 })
 @MultipartConfig
 
@@ -57,6 +58,7 @@ public class Image extends HttpServlet {
         CommandsMap.put("Image", 1);
         CommandsMap.put("Images", 2);
         CommandsMap.put("Thumb", 3);
+        CommandsMap.put("RmImage", 4);
 
     }
 
@@ -89,7 +91,10 @@ public class Image extends HttpServlet {
             case 3:
                 DisplayImage(Convertors.DISPLAY_THUMB,args[2],  response);
                 break;
-            default:
+            case 4:
+                RemoveImage(Convertors.DISPLAY_PROCESSED,args[2], response);
+                break;
+            default:                
                 error("Bad Operator", response);
         }
     }
@@ -103,6 +108,15 @@ public class Image extends HttpServlet {
         rd.forward(request, response);
 
     }
+    
+    private void RemoveImage(int type,String Image, HttpServletResponse response) throws ServletException, IOException {
+        PicModel tm = new PicModel();
+        tm.setCluster(cluster);
+  
+        
+        Pic p = tm.getPic(type,java.util.UUID.fromString(Image));
+        tm.removePic(java.util.UUID.fromString(Image));
+    }
 
     private void DisplayImage(int type,String Image, HttpServletResponse response) throws ServletException, IOException {
         PicModel tm = new PicModel();
@@ -110,6 +124,11 @@ public class Image extends HttpServlet {
   
         
         Pic p = tm.getPic(type,java.util.UUID.fromString(Image));
+        if(p == null){
+            response.sendRedirect("/Instagrim/index");
+            return;
+        }
+        
         
         OutputStream out = response.getOutputStream();
 
@@ -123,6 +142,7 @@ public class Image extends HttpServlet {
             out.write(buffer, 0, length);
         }
         out.close();
+            
     }
 
 

@@ -52,6 +52,42 @@ public class PicModel {
         this.cluster = cluster;
     }
 
+    public void removePic(java.util.UUID picid){
+        Session session = cluster.connect("instagrim");
+        
+        PreparedStatement ps = session.prepare("select * from pics where picid=?");
+        ResultSet rs = null;
+        BoundStatement boundStatement = new BoundStatement(ps);
+        rs = session.execute( // this is where the query is executed
+                boundStatement.bind( // here you are binding the 'boundStatement'
+                        picid));
+        
+        String uname = "";
+        Date addDate = null;
+        if (rs.isExhausted()) {
+            System.out.println("No Profile");
+            return;
+        } else {
+            for (Row row : rs) {
+                uname = row.getString("user");
+                addDate = row.getDate("interaction_time");
+            }
+        }
+        
+        //String picid =  pic.getSUUID();
+        
+        //DELETE from users WHERE lastname = “Doe”;
+        PreparedStatement psRemovePic = session.prepare("DELETE from pics WHERE picid=?");
+        PreparedStatement psRemovePicFromUser = session.prepare("DELETE from userpiclist WHERE pic_added=? AND user=?");
+        BoundStatement bsRemovePic = new BoundStatement(psRemovePic);
+        BoundStatement bsRemovePicFromUser = new BoundStatement(psRemovePicFromUser);
+        
+        session.execute(bsRemovePic.bind(picid));
+        session.execute(bsRemovePicFromUser.bind(addDate, uname));
+        session.close();
+        
+    }
+    
     public void insertPic(byte[] b, String type, String name, String user) {
         try {
             Convertors convertor = new Convertors();

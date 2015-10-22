@@ -10,6 +10,7 @@ uk\ac\dundee\computing\aec\instagrim\models\PicModel.class
 uk\ac\dundee\computing\aec\instagrim\stores\UserInfo.class
 uk\ac\dundee\computing\aec\instagrim\lib\CassandraHosts.class
 uk\ac\dundee\computing\aec\instagrim\stores\LoggedIn.class
+uk\ac\dundee\computing\aec\instagrim\servlets\Search.class
 uk\ac\dundee\computing\aec\instagrim\lib\AeSimpleSHA1.class
 uk\ac\dundee\computing\aec\instagrim\models\User.class
 uk\ac\dundee\computing\aec\instagrim\lib\Keyspaces.class
