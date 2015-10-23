@@ -7,6 +7,7 @@ package uk.ac.dundee.computing.aec.instagrim.stores;
 
 import com.datastax.driver.core.utils.Bytes;
 import java.nio.ByteBuffer;
+import java.util.Date;
 
 /**
  *
@@ -17,6 +18,7 @@ public class Pic {
     private ByteBuffer bImage = null;
     private int length;
     private String type;
+    private String user;
     private java.util.UUID UUID=null;
     
     public void Pic() {
@@ -28,6 +30,14 @@ public class Pic {
     public String getSUUID(){
         return UUID.toString();
     }
+    
+    public void setUser(String user){
+        this.user =user;
+    }
+    public String getUser(){
+        return user;
+    }
+    
     public void setPic(ByteBuffer bImage, int length,String type) {
         this.bImage = bImage;
         this.length = length;

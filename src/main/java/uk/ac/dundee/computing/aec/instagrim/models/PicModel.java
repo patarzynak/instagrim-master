@@ -30,6 +30,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.security.Timestamp;
 import java.util.Date;
 import java.util.LinkedList;
 import javax.imageio.ImageIO;
@@ -51,8 +52,8 @@ public class PicModel {
     public void setCluster(Cluster cluster) {
         this.cluster = cluster;
     }
-
-    public void removePic(java.util.UUID picid){
+    
+    public String removePicGetOwner(java.util.UUID picid){
         Session session = cluster.connect("instagrim");
         
         PreparedStatement ps = session.prepare("select * from pics where picid=?");
@@ -63,17 +64,31 @@ public class PicModel {
                         picid));
         
         String uname = "";
-        Date addDate = null;
+        //adjust epoch time from timestamp to Date
+        
+        final long NUM_100NS_INTERVALS_SINCE_UUID_EPOCH = 0x01b21dd213814000L; 
+        long epoch = (picid.timestamp() - NUM_100NS_INTERVALS_SINCE_UUID_EPOCH) / 10000;
+        
+        
+        //long time = (picid.timestamp() );
+        
+        
+        //time = (time / 10000L) - 12219292800L;
+        Date addDate = new Date(epoch);
+        Date addDate2 = null;
+        System.out.println(addDate);
         if (rs.isExhausted()) {
             System.out.println("No Profile");
-            return;
+            return null;
         } else {
             for (Row row : rs) {
                 uname = row.getString("user");
-                addDate = row.getDate("interaction_time");
+                addDate2 = row.getDate("interaction_time");
             }
         }
-        
+        System.out.println(addDate2);
+        System.out.println(addDate2.equals(addDate));
+        System.out.println(uname);
         //String picid =  pic.getSUUID();
         
         //DELETE from users WHERE lastname = “Doe”;
@@ -83,9 +98,9 @@ public class PicModel {
         BoundStatement bsRemovePicFromUser = new BoundStatement(psRemovePicFromUser);
         
         session.execute(bsRemovePic.bind(picid));
-        session.execute(bsRemovePicFromUser.bind(addDate, uname));
-        session.close();
-        
+        session.execute(bsRemovePicFromUser.bind(addDate2, uname));
+        //session.close();
+        return uname;
     }
     
     public void insertPic(byte[] b, String type, String name, String user) {
@@ -195,8 +210,10 @@ public class PicModel {
             for (Row row : rs) {
                 Pic pic = new Pic();
                 java.util.UUID UUID = row.getUUID("picid");
-                System.out.println("UUID" + UUID.toString());
+                //System.out.println("UUID" + UUID.toString());
                 pic.setUUID(UUID);
+                System.out.println("User " + User);
+                pic.setUser(User);
                 Pics.add(pic);
 
             }

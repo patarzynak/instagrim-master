@@ -33,8 +33,19 @@
                 Pic p = (Pic) iterator.next();
 
         %>
-        <a href="/Instagrim/Image/<%=p.getSUUID()%>" ><img src="/Instagrim/Thumb/<%=p.getSUUID()%>"></a><br/><%
-
+        <a href="/Instagrim/Image/<%=p.getSUUID()%>" ><img src="/Instagrim/Thumb/<%=p.getSUUID()%>"></a>
+        <%
+                        
+                    LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
+                    
+                    if (lg != null) {
+                        String uname = lg.getUsername();
+                        if (lg.getlogedin() && uname.equals(p.getUser())) {
+            %>
+        <a href="/Instagrim/RmImage/<%=p.getSUUID()%>" >Delete This Image</a><br/><%
+                        }
+                    }
+                    %><br/><%
             }
             }
         %>

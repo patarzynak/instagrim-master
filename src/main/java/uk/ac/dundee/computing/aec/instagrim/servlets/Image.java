@@ -92,7 +92,7 @@ public class Image extends HttpServlet {
                 DisplayImage(Convertors.DISPLAY_THUMB,args[2],  response);
                 break;
             case 4:
-                RemoveImage(Convertors.DISPLAY_PROCESSED,args[2], response);
+                RemoveImage(args[2], response);
                 break;
             default:                
                 error("Bad Operator", response);
@@ -109,16 +109,16 @@ public class Image extends HttpServlet {
 
     }
     
-    private void RemoveImage(int type,String Image, HttpServletResponse response) throws ServletException, IOException {
+    private void RemoveImage(String Image, HttpServletResponse response) throws ServletException, IOException {
         PicModel tm = new PicModel();
         tm.setCluster(cluster);
-  
         
-        Pic p = tm.getPic(type,java.util.UUID.fromString(Image));
-        tm.removePic(java.util.UUID.fromString(Image));
+        String uname = tm.removePicGetOwner(java.util.UUID.fromString(Image));
+        response.sendRedirect("/Instagrim/Images/"+uname);
     }
 
     private void DisplayImage(int type,String Image, HttpServletResponse response) throws ServletException, IOException {
+        
         PicModel tm = new PicModel();
         tm.setCluster(cluster);
   
