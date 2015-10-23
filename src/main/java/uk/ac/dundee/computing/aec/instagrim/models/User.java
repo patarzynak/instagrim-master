@@ -38,7 +38,7 @@ public class User {
     }
     
     public UserInfo getProfile(String username){
-        UserInfo profile = null;
+        UserInfo profile = new UserInfo();
         Session session = cluster.connect("instagrim");
         PreparedStatement ps = session.prepare("select * from userprofiles where login =?");
         ResultSet rs = null;
@@ -50,6 +50,7 @@ public class User {
             System.out.println("No Profile");
             return null;
         } else {
+            
             for (Row row : rs) {
                 Map<String, UDTValue> addressMap = row.getMap("addresses", String.class, UDTValue.class);
                 String str = null, cit = null;
@@ -60,7 +61,7 @@ public class User {
                     cit = addressMap.get("addresses").getString("city");
                     zip = addressMap.get("addresses").getInt("zip");
                 }
-                profile = new UserInfo();
+                
                 profile.setInfo(row.getString("login"),
                                 row.getString("first_name"),
                                 row.getString("last_name"),
@@ -72,7 +73,34 @@ public class User {
 
             }
         }
+        
+        profile.setProfilePic(profilePic(username));
+        
         return profile;
+    }
+    
+    private String profilePic(String username){
+        String rtn = "";
+        
+        Session session = cluster.connect("instagrim");
+        PreparedStatement ps = session.prepare("select * from profilepics where login =?");
+        ResultSet rs = null;
+        BoundStatement boundStatement = new BoundStatement(ps);
+        rs = session.execute( // this is where the query is executed
+                boundStatement.bind( // here you are binding the 'boundStatement'
+                        username));
+        
+        
+        if (rs.isExhausted()) {
+            System.out.println("No Profile");
+            return "c547ca20-7902-11e5-9542-844bf5b07446";
+        } else {
+            
+            for (Row row : rs) {
+                rtn = row.getString("profile_pic");
+            }
+        }
+        return rtn;
     }
     
     public boolean RegisterUser(String username, String Password, String firstname, String lastname, String street, String city, int zip, String email){

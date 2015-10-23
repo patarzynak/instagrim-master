@@ -49,6 +49,10 @@ public final class Keyspaces {
                     + "      email set<text>,\n"
                     + "      addresses  map<text, frozen <address>>\n"
                     + "  );";
+            String CreateProfilePics = "CREATE TABLE if not exists instagrim.profilepics (\n"
+                    + "      login text PRIMARY KEY,\n"
+                     + "     profile_pic uuid\n"
+                    + "  );";
             Session session = c.connect();
             try {
                 PreparedStatement statement = session
@@ -69,7 +73,7 @@ public final class Keyspaces {
                 SimpleStatement cqlQuery = new SimpleStatement(CreatePicTable);
                 session.execute(cqlQuery);
             } catch (Exception et) {
-                System.out.println("Can't create tweet table " + et);
+                System.out.println("Can't create pic table " + et);
             }
             System.out.println("" + Createuserpiclist);
 
@@ -79,6 +83,14 @@ public final class Keyspaces {
             } catch (Exception et) {
                 System.out.println("Can't create user pic list table " + et);
             }
+            
+            try {
+                SimpleStatement cqlQuery = new SimpleStatement(CreateProfilePics);
+                session.execute(cqlQuery);
+            } catch (Exception et) {
+                System.out.println("Can't create profile pics table " + et);
+            }
+            
             System.out.println("" + CreateAddressType);
             try {
                 SimpleStatement cqlQuery = new SimpleStatement(CreateAddressType);

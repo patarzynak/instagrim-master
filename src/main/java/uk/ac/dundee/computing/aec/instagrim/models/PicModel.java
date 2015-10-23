@@ -53,7 +53,7 @@ public class PicModel {
         this.cluster = cluster;
     }
     
-    public String removePicGetOwner(java.util.UUID picid){
+    public String GetOwner(java.util.UUID picid){
         Session session = cluster.connect("instagrim");
         
         PreparedStatement ps = session.prepare("select * from pics where picid=?");
@@ -64,34 +64,41 @@ public class PicModel {
                         picid));
         
         String uname = "";
-        //adjust epoch time from timestamp to Date
-        
-        final long NUM_100NS_INTERVALS_SINCE_UUID_EPOCH = 0x01b21dd213814000L; 
-        long epoch = (picid.timestamp() - NUM_100NS_INTERVALS_SINCE_UUID_EPOCH) / 10000;
-        
-        
-        //long time = (picid.timestamp() );
-        
-        
-        //time = (time / 10000L) - 12219292800L;
-        Date addDate = new Date(epoch);
-        Date addDate2 = null;
-        System.out.println(addDate);
         if (rs.isExhausted()) {
-            System.out.println("No Profile");
+            System.out.println("Ooops...");
             return null;
+        } else {
+            for (Row row : rs) {
+                uname = row.getString("user");
+            }
+        }
+        return uname;
+    }
+    
+    public void removePic(java.util.UUID picid){
+        Session session = cluster.connect("instagrim");
+        
+        PreparedStatement ps = session.prepare("select * from pics where picid=?");
+        ResultSet rs = null;
+        BoundStatement boundStatement = new BoundStatement(ps);
+        rs = session.execute( // this is where the query is executed
+                boundStatement.bind( // here you are binding the 'boundStatement'
+                        picid));
+        
+        String uname = "";
+        Date addDate2 = null;
+        
+        if (rs.isExhausted()) {
+            System.out.println("Ooops...");
+            return;
         } else {
             for (Row row : rs) {
                 uname = row.getString("user");
                 addDate2 = row.getDate("interaction_time");
             }
         }
-        System.out.println(addDate2);
-        System.out.println(addDate2.equals(addDate));
-        System.out.println(uname);
-        //String picid =  pic.getSUUID();
         
-        //DELETE from users WHERE lastname = “Doe”;
+        
         PreparedStatement psRemovePic = session.prepare("DELETE from pics WHERE picid=?");
         PreparedStatement psRemovePicFromUser = session.prepare("DELETE from userpiclist WHERE pic_added=? AND user=?");
         BoundStatement bsRemovePic = new BoundStatement(psRemovePic);
@@ -100,7 +107,7 @@ public class PicModel {
         session.execute(bsRemovePic.bind(picid));
         session.execute(bsRemovePicFromUser.bind(addDate2, uname));
         //session.close();
-        return uname;
+        
     }
     
     public void insertPic(byte[] b, String type, String name, String user) {
@@ -212,7 +219,7 @@ public class PicModel {
                 java.util.UUID UUID = row.getUUID("picid");
                 //System.out.println("UUID" + UUID.toString());
                 pic.setUUID(UUID);
-                System.out.println("User " + User);
+                //System.out.println("User " + User);
                 pic.setUser(User);
                 Pics.add(pic);
 

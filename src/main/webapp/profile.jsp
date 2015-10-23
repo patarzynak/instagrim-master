@@ -29,6 +29,7 @@
         %>
         <h1><%=usInf.getUname()%>'s Profile </h1>
         <ul>
+            <li><img src="/Instagrim/Thumb/<%=usInf.getProfPic()%>"></li>
             <li><b>Name:</b> <%=usInf.getFname()%> <%=usInf.getLname()%></li>
             <li><b>Address:</b> <%=usInf.getStreet()%>, <%=usInf.getCity()%>, <%=usInf.getZip()%></li>
             <li><b>Email:</b> <%=usInf.getEmail()%> </li>

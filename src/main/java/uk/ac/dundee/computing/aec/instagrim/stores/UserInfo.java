@@ -17,6 +17,7 @@ public class UserInfo {
     private String city;
     private int zip;
     private String email;
+    private String picID;
     
     public UserInfo(){
         username = "";
@@ -26,6 +27,7 @@ public class UserInfo {
         city = "";
         zip = -1;
         email = "";
+        picID = "";
     }
     
     public void setInfo(String username, String firstname, String lastname, String street, String city, int zip, String email){
@@ -36,6 +38,11 @@ public class UserInfo {
         this.city = city;
         this.zip = zip;
         this.email = email;
+        
+    }
+    
+    public void setProfilePic(String picID){
+        this.picID = picID;
     }
     
     public String getUname(){
@@ -64,6 +71,10 @@ public class UserInfo {
     
     public String getEmail(){
         return email;
+    }
+    
+    public String getProfPic(){
+        return picID;
     }
 }
 
