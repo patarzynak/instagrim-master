@@ -101,12 +101,25 @@ public class PicModel {
         
         PreparedStatement psRemovePic = session.prepare("DELETE from pics WHERE picid=?");
         PreparedStatement psRemovePicFromUser = session.prepare("DELETE from userpiclist WHERE pic_added=? AND user=?");
+        PreparedStatement psRemovePicFromProfile = session.prepare("DELETE from profilepics WHERE login=?");
         BoundStatement bsRemovePic = new BoundStatement(psRemovePic);
         BoundStatement bsRemovePicFromUser = new BoundStatement(psRemovePicFromUser);
+        BoundStatement bsRemovePicFromProfile = new BoundStatement(psRemovePicFromProfile);
         
         session.execute(bsRemovePic.bind(picid));
         session.execute(bsRemovePicFromUser.bind(addDate2, uname));
+        session.execute(bsRemovePicFromProfile.bind(uname));
         //session.close();
+        
+    }
+    
+    public void addToProfile(java.util.UUID picid, String username){
+        Session session = cluster.connect("instagrim");
+        
+        
+        PreparedStatement psAdd = session.prepare("INSERT into profilepics (login, picid) values (?,?)");
+        BoundStatement bsAdd = new BoundStatement(psAdd);
+        session.execute(bsAdd.bind(username, picid));
         
     }
     

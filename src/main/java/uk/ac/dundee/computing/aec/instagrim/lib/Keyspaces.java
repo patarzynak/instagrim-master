@@ -51,7 +51,7 @@ public final class Keyspaces {
                     + "  );";
             String CreateProfilePics = "CREATE TABLE if not exists instagrim.profilepics (\n"
                     + "      login text PRIMARY KEY,\n"
-                     + "     profile_pic uuid\n"
+                     + "     picid uuid\n"
                     + "  );";
             Session session = c.connect();
             try {

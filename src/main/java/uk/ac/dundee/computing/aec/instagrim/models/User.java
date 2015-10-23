@@ -92,12 +92,13 @@ public class User {
         
         
         if (rs.isExhausted()) {
-            System.out.println("No Profile");
-            return "c547ca20-7902-11e5-9542-844bf5b07446";
+            //This is UUID for a default profile picture (manuallly inserted into the table)
+            //it's in the pics table, and has empty string in 'user' column
+            return "51ef7370-79ca-11e5-853f-844bf5b07446";
         } else {
             
             for (Row row : rs) {
-                rtn = row.getString("profile_pic");
+                rtn = row.getUUID("picid").toString();
             }
         }
         return rtn;

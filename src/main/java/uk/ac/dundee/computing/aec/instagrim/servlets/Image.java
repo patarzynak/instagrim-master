@@ -37,7 +37,8 @@ import uk.ac.dundee.computing.aec.instagrim.stores.Pic;
     "/Thumb/*",
     "/Images",
     "/Images/*",
-    "/RmImage/*"
+    "/RmImage/*",
+    "/SetPic/*"
 })
 @MultipartConfig
 
@@ -59,6 +60,7 @@ public class Image extends HttpServlet {
         CommandsMap.put("Images", 2);
         CommandsMap.put("Thumb", 3);
         CommandsMap.put("RmImage", 4);
+        CommandsMap.put("SetPic", 5);
 
     }
 
@@ -94,6 +96,9 @@ public class Image extends HttpServlet {
             case 4:
                 RemoveImage(args[2], response, request);
                 break;
+            case 5:
+                SetAsProfilePic(args[2], response, request);
+                break;
             default:                
                 error("Bad Operator", response);
         }
@@ -121,6 +126,25 @@ public class Image extends HttpServlet {
                     username=lg.getUsername();
                     if(username.equals(uname)){
                         tm.removePic(java.util.UUID.fromString(Image));
+                    }
+                }
+            }
+        
+        response.sendRedirect("/Instagrim/Images/"+uname);
+    }
+    
+    private void SetAsProfilePic(String Image, HttpServletResponse response, HttpServletRequest request) throws ServletException, IOException {
+        PicModel tm = new PicModel();
+        tm.setCluster(cluster);
+        String uname = tm.GetOwner(java.util.UUID.fromString(Image));
+        HttpSession session=request.getSession();
+            LoggedIn lg= (LoggedIn)session.getAttribute("LoggedIn");
+            String username=""; 
+            if(lg != null){
+                if (lg.getlogedin()){
+                    username=lg.getUsername();
+                    if(username.equals(uname)){
+                        tm.addToProfile(java.util.UUID.fromString(Image), username);
                     }
                 }
             }

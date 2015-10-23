@@ -10,8 +10,26 @@ and open the template in the editor.
 
 body{
     font-family: "Helvetica", sans-serif;
-    background-color: whitesmoke;
+    background-color: white;
 }
+
+#right{
+    float: right;
+}
+
+a:link {
+    color: #585858
+    
+}
+
+a:visited {
+    color: #585858
+}
+
+a:hover {
+    color: #FE2E2E;
+}
+
 form ul li{
     list-style-type:  none;
     line-height: 30px;
@@ -40,12 +58,12 @@ nav {
 }
 
 nav a:link {
-    color: whitesmoke;
+    color: white;
     
 }
 
 nav a:visited {
-    color: whitesmoke;
+    color: white;
 }
 
 nav a:hover {

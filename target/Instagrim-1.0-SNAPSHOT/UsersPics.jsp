@@ -42,7 +42,9 @@
                         String uname = lg.getUsername();
                         if (lg.getlogedin() && uname.equals(p.getUser())) {
             %>
-        <a href="/Instagrim/RmImage/<%=p.getSUUID()%>" >Delete This Image</a><br/><%
+        <a href="/Instagrim/RmImage/<%=p.getSUUID()%>" >Delete</a>&nbsp&nbsp&nbsp
+        <a href="/Instagrim/SetPic/<%=p.getSUUID()%>" >Set as Profile Pic</a><br/>
+        <%
                         }
                     }
                     %><br/><%
