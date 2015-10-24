@@ -104,6 +104,28 @@ public class User {
         return rtn;
     }
     
+     public boolean UpdateUser(String username,String firstname, String lastname){
+                
+        Session session = cluster.connect("instagrim");
+        if(!firstname.equals("")){
+            PreparedStatement psFirst = session.prepare("UPDATE userprofiles SET first_name='"+firstname+"' WHERE login=?");
+            BoundStatement bsFirst = new BoundStatement(psFirst);
+            session.execute( 
+                    bsFirst.bind( 
+                            username));
+        }
+        
+        if(!lastname.equals("")){
+        PreparedStatement psLast = session.prepare("UPDATE userprofiles SET last_name='"+lastname+"' WHERE login=?");
+        BoundStatement bsLast = new BoundStatement(psLast);
+        session.execute( 
+                bsLast.bind( 
+                        username));
+        }
+        
+        return true;
+    }
+    
     public boolean RegisterUser(String username, String Password, String firstname, String lastname, String street, String city, int zip, String email){
         AeSimpleSHA1 sha1handler=  new AeSimpleSHA1();
         String EncodedPassword=null;
