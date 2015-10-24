@@ -104,7 +104,7 @@ public class User {
         return rtn;
     }
     
-     public boolean UpdateUser(String username,String firstname, String lastname){
+     public boolean UpdateUser(String username,String firstname, String lastname, String street, String city, String zip, String email){
                 
         Session session = cluster.connect("instagrim");
         if(!firstname.equals("")){
@@ -121,6 +121,33 @@ public class User {
         session.execute( 
                 bsLast.bind( 
                         username));
+        }
+        
+        if(!street.equals("") && !city.equals("") && !street.equals("")){
+            int numzip = Integer.parseInt(zip);
+            Map<String, UDTValue> addresses = new HashMap(); 
+            UserType addressType = cluster.getMetadata().getKeyspace("instagrim").getUserType("address");
+            UDTValue fullAddress = addressType.newValue()
+                    .setString("street", street)
+                    .setString("city", city)
+                    .setInt("zip", numzip);
+            addresses.put("addresses", fullAddress);
+
+            PreparedStatement psAdr = session.prepare("UPDATE userprofiles SET addresses=? WHERE login=?");
+            BoundStatement bsAdr = new BoundStatement(psAdr);
+            session.execute( 
+                    bsAdr.bind( 
+                            addresses, username));
+        }
+        
+        if(!email.equals("")){
+            Set<String> enEmail = new HashSet<String>();
+            enEmail.add(email);
+            PreparedStatement psEmail = session.prepare("UPDATE userprofiles SET email=? WHERE login=?");
+            BoundStatement bsEmail = new BoundStatement(psEmail);
+            session.execute( 
+                    bsEmail.bind( 
+                            enEmail, username));
         }
         
         return true;

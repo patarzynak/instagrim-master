@@ -19,7 +19,7 @@
         <%@include file="nav.jsp" %>
  
         <article>
-            <h1>Your Pics</h1>
+            <h1>Picture Collection</h1>
         <%
             java.util.LinkedList<Pic> lsPics = (java.util.LinkedList<Pic>) request.getAttribute("Pics");
             if (lsPics == null) {

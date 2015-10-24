@@ -17,11 +17,16 @@
         <%@include file="nav.jsp" %>
        
         <article>
-            <h3>Register as user</h3>
+            <h3>Update Your Profile Info</h3>
             <form method="POST"  action="Update">
                 <ul>                    
                     <li>First Name <input type="text" name="firstname"></li>
                     <li>Last Name <input type="text" name="lastname"></li>
+                    <li><b>Address: </b></li>
+                    <li>Street <input type="text" name="street"></li>
+                    <li>City <input type="text" name="city"></li>
+                    <li>ZIP code <input type="text" name="zip"></li>
+                    <li><b>Email </b><input type="text" name="email"></li>
                 </ul>
                 <br/>
                 <input type="submit" value="Update"> 

@@ -56,13 +56,18 @@ public class UpdateProfile extends HttpServlet {
         
         String firstname=request.getParameter("firstname");
         String lastname=request.getParameter("lastname");
+        String street=request.getParameter("street");
+        String city=request.getParameter("city");
+        String zip=request.getParameter("zip");
+        String email=request.getParameter("email");
+        
         HttpSession session=request.getSession();
             LoggedIn lg= (LoggedIn)session.getAttribute("LoggedIn");
             String uname = "majed";
             if(lg != null){
                 if (lg.getlogedin()){
                     uname=lg.getUsername();
-                    us.UpdateUser(uname, firstname, lastname);
+                    us.UpdateUser(uname, firstname, lastname, street, city, zip, email);
                 }
             }
         
