@@ -31,6 +31,16 @@
                 <br/>
                 <input type="submit" value="Update"> 
             </form>
+            <br/>
+            <h3>Change Your Password</h3>
+            <form method="POST"  action="ChangePassword">
+                <ul>                    
+                    <li>New password <input type="password" name="newpass"></li>
+                    <li>Repeat new password <input type="password" name="renewpass"></li>
+                </ul>
+                <br/>
+                <input type="submit" value="Change Password"> 
+            </form>
 
         </article>
         <%@include file="footer.jsp" %>

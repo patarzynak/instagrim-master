@@ -28,9 +28,9 @@ import uk.ac.dundee.computing.aec.instagrim.stores.UserInfo;
  *
  * @author Administrator
  */
-public class User {
+public class UserModel {
     Cluster cluster;
-    public User(){
+    public UserModel(){
         
     }
     public void setCluster(Cluster cluster) {
@@ -104,6 +104,8 @@ public class User {
         return rtn;
     }
     
+    
+    
      public boolean UpdateUser(String username,String firstname, String lastname, String street, String city, String zip, String email){
                 
         Session session = cluster.connect("instagrim");
@@ -152,6 +154,32 @@ public class User {
         
         return true;
     }
+    public boolean ChangePass(String username, String password){
+        AeSimpleSHA1 sha1handler=  new AeSimpleSHA1();
+        String EncodedPassword=null;
+        try {
+            EncodedPassword= sha1handler.SHA1(password);
+            
+        }catch (UnsupportedEncodingException | NoSuchAlgorithmException et){
+            System.out.println("Can't check your password");
+            return false;
+        }
+        
+        Session session = cluster.connect("instagrim");
+        if(!password.equals("")){
+            PreparedStatement ps = session.prepare("UPDATE userprofiles SET password=? WHERE login=?");
+            BoundStatement bs = new BoundStatement(ps);
+            session.execute( 
+                    bs.bind( 
+                            EncodedPassword, username));
+        }
+        else{
+            return false;
+        }
+        
+        
+        return true;
+    }
     
     public boolean RegisterUser(String username, String Password, String firstname, String lastname, String street, String city, int zip, String email){
         AeSimpleSHA1 sha1handler=  new AeSimpleSHA1();
@@ -164,11 +192,11 @@ public class User {
                 .setString("street", street)
                 .setString("city", city)
                 .setInt("zip", zip);
-        
+        enEmail.add(email);
+        addresses.put("addresses", fullAddress);
         try {
             EncodedPassword= sha1handler.SHA1(Password);
-            enEmail.add(email);
-            addresses.put("addresses", fullAddress);
+            
         }catch (UnsupportedEncodingException | NoSuchAlgorithmException et){
             System.out.println("Can't check your password");
             return false;

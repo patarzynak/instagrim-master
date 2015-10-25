@@ -43,11 +43,11 @@
     </servlet-mapping>
     
     <servlet>
-        <servlet-name>updateProf</servlet-name>
-        <jsp-file>/updateProf.jsp</jsp-file>
+        <servlet-name>update</servlet-name>
+        <jsp-file>/update.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
-        <servlet-name>updateProf</servlet-name>
+        <servlet-name>update</servlet-name>
         <url-pattern>/update</url-pattern>
     </servlet-mapping>
 </web-app>

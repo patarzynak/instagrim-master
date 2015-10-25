@@ -19,6 +19,8 @@ import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.utils.Bytes;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -123,7 +125,7 @@ public class PicModel {
         
     }
     
-    public void insertPic(byte[] b, String type, String name, String user) {
+    public void insertPic(byte[] b, String type, String name, String user, String title) {
         try {
             Convertors convertor = new Convertors();
 
@@ -154,13 +156,13 @@ public class PicModel {
             int processedlength=processedb.length;
             Session session = cluster.connect("instagrim");
 
-            PreparedStatement psInsertPic = session.prepare("insert into pics ( picid, image,thumb,processed, user, interaction_time,imagelength,thumblength,processedlength,type,name) values(?,?,?,?,?,?,?,?,?,?,?)");
+            PreparedStatement psInsertPic = session.prepare("insert into pics ( picid, image,thumb,processed, user, interaction_time,imagelength,thumblength,processedlength,type,name,title) values(?,?,?,?,?,?,?,?,?,?,?,?)");
             PreparedStatement psInsertPicToUser = session.prepare("insert into userpiclist ( picid, user, pic_added) values(?,?,?)");
             BoundStatement bsInsertPic = new BoundStatement(psInsertPic);
             BoundStatement bsInsertPicToUser = new BoundStatement(psInsertPicToUser);
 
             Date DateAdded = new Date();
-            session.execute(bsInsertPic.bind(picid, buffer, thumbbuf,processedbuf, user, DateAdded, length,thumblength,processedlength, type, name));
+            session.execute(bsInsertPic.bind(picid, buffer, thumbbuf,processedbuf, user, DateAdded, length,thumblength,processedlength, type, name, title));
             session.execute(bsInsertPicToUser.bind(picid, user, DateAdded));
             session.close();
 
@@ -190,6 +192,7 @@ public class PicModel {
         try {
             BufferedImage BI = ImageIO.read(new File("/var/tmp/instagrim/" + picid));
             BufferedImage processed = createProcessed(BI);
+            
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(processed, type, baos);
             baos.flush();
@@ -223,6 +226,9 @@ public class PicModel {
         rs = session.execute( // this is where the query is executed
                 boundStatement.bind( // here you are binding the 'boundStatement'
                         User));
+        
+        
+        
         if (rs.isExhausted()) {
             System.out.println("No Images returned");
             return null;
@@ -233,6 +239,7 @@ public class PicModel {
                 //System.out.println("UUID" + UUID.toString());
                 pic.setUUID(UUID);
                 //System.out.println("User " + User);
+                pic.setTitle(selectTitle(UUID));
                 pic.setUser(User);
                 Pics.add(pic);
 
@@ -240,11 +247,37 @@ public class PicModel {
         }
         return Pics;
     }
+    
+    private String selectTitle(java.util.UUID id){
+        Session session = cluster.connect("instagrim");
+        PreparedStatement ps = session.prepare("select title from pics where picid=?");
+        ResultSet rs = null;
+        BoundStatement boundStatement = new BoundStatement(ps);
+        rs = session.execute( // this is where the query is executed
+                boundStatement.bind( // here you are binding the 'boundStatement'
+                        id));
+        
+        String title = null;
+        
+        if (rs.isExhausted()) {
+            System.out.println("No Titles returned");
+            return null;
+        } else {
+            for (Row row : rs) {
+                Pic pic = new Pic();
+                title = row.getString("title");
+
+            }
+        }
+        return title;
+    }
 
     public Pic getPic(int image_type, java.util.UUID picid) {
         Session session = cluster.connect("instagrim");
         ByteBuffer bImage = null;
         String type = null;
+        String title = null;
+        
         int length = 0;
         try {
             Convertors convertor = new Convertors();
@@ -253,11 +286,11 @@ public class PicModel {
          
             if (image_type == Convertors.DISPLAY_IMAGE) {
                 
-                ps = session.prepare("select image,imagelength,type from pics where picid =?");
+                ps = session.prepare("select image,imagelength,type,title from pics where picid =?");
             } else if (image_type == Convertors.DISPLAY_THUMB) {
-                ps = session.prepare("select thumb,imagelength,thumblength,type from pics where picid =?");
+                ps = session.prepare("select thumb,imagelength,thumblength,type,title from pics where picid =?");
             } else if (image_type == Convertors.DISPLAY_PROCESSED) {
-                ps = session.prepare("select processed,processedlength,type from pics where picid =?");
+                ps = session.prepare("select processed,processedlength,type,title from pics where picid =?");
             }
             BoundStatement boundStatement = new BoundStatement(ps);
             rs = session.execute( // this is where the query is executed
@@ -279,8 +312,9 @@ public class PicModel {
                     } else if (image_type == Convertors.DISPLAY_PROCESSED) {
                         bImage = row.getBytes("processed");
                         length = row.getInt("processedlength");
+                        
                     }
-                    
+                    title = row.getString("title");
                     type = row.getString("type");
 
                 }
@@ -292,6 +326,7 @@ public class PicModel {
         session.close();
         Pic p = new Pic();
         p.setPic(bImage, length, type);
+        p.setTitle(title);
 
         return p;
 

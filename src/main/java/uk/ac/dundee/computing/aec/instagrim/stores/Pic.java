@@ -20,6 +20,7 @@ public class Pic {
     private String type;
     private String user;
     private java.util.UUID UUID=null;
+    private String title;
     
     public void Pic() {
 
@@ -37,11 +38,23 @@ public class Pic {
     public String getUser(){
         return user;
     }
+    public void setTitle(String title){
+        if (title != null){
+                this.title=title;
+        }
+        else{
+            this.title="";
+        }
+    }
+    public String getTitle(){
+        return title;
+    }
     
     public void setPic(ByteBuffer bImage, int length,String type) {
         this.bImage = bImage;
         this.length = length;
         this.type=type;
+        
     }
 
     public ByteBuffer getBuffer() {

@@ -25,7 +25,7 @@
             <h3>File Upload</h3>
             <form method="POST" enctype="multipart/form-data" action="Image">
                 File to upload: <input type="file" name="upfile"><br/>
-
+                Title: <input type="text" name="title"><br/>
                 <br/>
                 <input type="submit" value="Press"> to upload the file!
             </form>

@@ -33,6 +33,7 @@
                 Pic p = (Pic) iterator.next();
 
         %>
+        <br/><b><%=p.getTitle()%></b><br/>
         <a href="/Instagrim/Image/<%=p.getSUUID()%>" ><img src="/Instagrim/Thumb/<%=p.getSUUID()%>"></a>
         <%
                         
@@ -47,7 +48,7 @@
         <%
                         }
                     }
-                    %><br/><%
+                    %><br/><br/><%
             }
             }
         %>

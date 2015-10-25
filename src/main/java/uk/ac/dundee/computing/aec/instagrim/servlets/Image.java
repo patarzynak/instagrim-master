@@ -167,6 +167,7 @@ public class Image extends HttpServlet {
         
         OutputStream out = response.getOutputStream();
 
+        
         response.setContentType(p.getType());
         response.setContentLength(p.getLength());
         //out.write(Image);
@@ -184,7 +185,8 @@ public class Image extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         for (Part part : request.getParts()) {
             System.out.println("Part Name " + part.getName());
-
+            
+            String title=request.getParameter("title");
             String type = part.getContentType();
             String filename = part.getSubmittedFileName();
             
@@ -202,7 +204,7 @@ public class Image extends HttpServlet {
                 System.out.println("Length : " + b.length);
                 PicModel tm = new PicModel();
                 tm.setCluster(cluster);
-                tm.insertPic(b, type, filename, username);
+                tm.insertPic(b, type, filename, username, title);
 
                 is.close();
             }

@@ -17,6 +17,27 @@
     <body>
         <%@include file="header.jsp" %>
         <%@include file="nav.jsp" %>
+        <div id="center">
+            <h1>
+                Black, White and All Shades of Grey!
+            </h1>
+            <h2>
+                Feels like Aberdeen.
+            </h2>
+                <%   
+                LoggedIn lg = (LoggedIn) session.getAttribute("LoggedIn");
+                if (lg != null) {
+                    String UserName = lg.getUsername();
+                    if (lg.getlogedin()) {
+                %>
+            <h3>
+                You're logged in as <i><%=UserName%></i>.
+            </h3>
+                <%
+                    }
+                }
+                %>
+        </div>
         <%@include file="footer.jsp" %>
     </body>
 </html>

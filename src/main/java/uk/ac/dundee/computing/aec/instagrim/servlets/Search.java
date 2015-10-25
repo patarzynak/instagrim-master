@@ -17,8 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import uk.ac.dundee.computing.aec.instagrim.lib.CassandraHosts;
-import uk.ac.dundee.computing.aec.instagrim.models.User;
-import uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn;
 
 /**
  *
@@ -47,7 +45,12 @@ public class Search extends HttpServlet {
             throws ServletException, IOException {
         
         String username=request.getParameter("username");
-        response.sendRedirect("/Instagrim/Profile/"+username);
+        if (!username.equals("")){
+            response.sendRedirect("/Instagrim/Profile/"+username);
+        }
+        else{
+            response.sendRedirect("/Instagrim/Profile/majed");
+        }
         
     }
 

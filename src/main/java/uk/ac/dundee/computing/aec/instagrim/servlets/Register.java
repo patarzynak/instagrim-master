@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import uk.ac.dundee.computing.aec.instagrim.lib.CassandraHosts;
-import uk.ac.dundee.computing.aec.instagrim.models.User;
+import uk.ac.dundee.computing.aec.instagrim.models.UserModel;
 
 /**
  *
@@ -68,7 +68,7 @@ public class Register extends HttpServlet {
         if(!username.equals("")){
             if (password.equals(repassword))
             {
-                User us=new User();
+                UserModel us=new UserModel();
                 us.setCluster(cluster);
                 us.RegisterUser(username, password, firstname, lastname, street, city, numzip, email);
                 response.sendRedirect("/Instagrim");

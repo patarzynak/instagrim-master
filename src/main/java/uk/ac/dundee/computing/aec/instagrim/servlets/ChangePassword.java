@@ -8,27 +8,24 @@ package uk.ac.dundee.computing.aec.instagrim.servlets;
 import com.datastax.driver.core.Cluster;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import uk.ac.dundee.computing.aec.instagrim.lib.CassandraHosts;
-import uk.ac.dundee.computing.aec.instagrim.lib.Convertors;
 import uk.ac.dundee.computing.aec.instagrim.models.UserModel;
-import uk.ac.dundee.computing.aec.instagrim.stores.Pic;
-import uk.ac.dundee.computing.aec.instagrim.stores.UserInfo;
+import uk.ac.dundee.computing.aec.instagrim.stores.LoggedIn;
 
 /**
  *
  * @author Kasia
  */
-@WebServlet(name = "Profile", urlPatterns = {"/Profile",
-                                             "/Profile/*"})
-public class Profile extends HttpServlet {
-
+@WebServlet(name = "ChangePassword", urlPatterns = {"/ChangePassword"})
+public class ChangePassword extends HttpServlet {
+    Cluster cluster=null;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,43 +35,10 @@ public class Profile extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    Cluster cluster=null;
-    
     public void init(ServletConfig config) throws ServletException {
         // TODO Auto-generated method stub
         cluster = CassandraHosts.getCluster();
     }
-    
-    private void displayProfile(String User, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
-        //String username=request.getParameter("username");
-        
-        UserModel us = new UserModel();
-        us.setCluster(cluster);
-        UserInfo usInf = us.getProfile(User);
-        RequestDispatcher rd = request.getRequestDispatcher("/profile.jsp");
-        request.setAttribute("Info", usInf);
-        rd.forward(request, response);
-
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String args[] = Convertors.SplitRequestPath(request);
-        displayProfile(args[2],request, response);
-        //processRequest(request, response);
-    }
-
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -86,7 +50,38 @@ public class Profile extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        processRequest(request, response);
+        UserModel us = new UserModel();
+        us.setCluster(cluster);
+        
+        String newpass=request.getParameter("newpass");
+        String renewpass=request.getParameter("renewpass");
+        
+        
+        
+        HttpSession session=request.getSession();
+            LoggedIn lg= (LoggedIn)session.getAttribute("LoggedIn");
+            String uname = "majed";
+            if(lg != null){
+                if (lg.getlogedin()){
+                    if (!newpass.equals(renewpass)){
+                        response.sendRedirect("/Instagrim/update");
+                    }
+                    else{
+                        uname=lg.getUsername();
+                        if(us.ChangePass(uname, newpass)){
+                           response.sendRedirect("/Instagrim/index"); 
+                        }
+                        else{
+                            response.sendRedirect("/Instagrim/update");
+                        }
+                
+                    }
+                }
+            }
+        
+        
+
+
     }
 
     /**

@@ -13,6 +13,10 @@ body{
     background-color: white;
 }
 
+#center{
+    text-align: center;
+}
+
 a:link {
     color: #585858
     
